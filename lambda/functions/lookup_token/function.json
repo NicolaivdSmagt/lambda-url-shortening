@@ -1,8 +1,9 @@
 {
-  "name": "redir_lookup_token",
-  "description": "Retrieve url for token",
-  "runtime": "nodejs",
+  "name": "redir_lookup",
+  "description": "Retrieve URL from DynamoDB",
+  "runtime": "python",
   "memory": 128,
   "timeout": 5,
   "role": "arn:aws:iam::{{YOUR AWS ACCOUNT ID}}:role/lambda_redir"
 }
+

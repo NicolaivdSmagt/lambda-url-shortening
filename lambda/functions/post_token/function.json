@@ -1,8 +1,9 @@
 {
-  "name": "redir_post_token",
-  "description": "post a token and url",
-  "runtime": "nodejs",
+  "name": "redir_post",
+  "description": "Post token and URL to DynamoDB",
+  "runtime": "python",
   "memory": 128,
   "timeout": 5,
   "role": "arn:aws:iam::{{YOUR AWS ACCOUNT ID}}:role/lambda_redir"
 }
+

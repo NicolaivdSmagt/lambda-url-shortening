@@ -1,0 +1,142 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "2016-04-16T06:16:10Z",
+    "title": "redir"
+  },
+  "basePath": "/",
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json",
+          "text/html"
+        ],
+        "parameters": [
+          {
+            "name": "auth",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "url",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response"
+          },
+          "403": {
+            "description": "403 response"
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "responses": {
+            "default": {
+              "statusCode": "200",
+              "responseTemplates": {
+                "application/json": "#set($inputRoot = $input.path('$'))\n{\n  \"shorturl\" : \"$inputRoot.shorturl\"\n}"
+              }
+            },
+            "Authentication failed": {
+              "statusCode": "403",
+              "responseTemplates": {
+                "text/html": "Authentication failed"
+              }
+            }
+          },
+          "requestTemplates": {
+            "application/json": "{\n    \"auth\" : \"$input.params('auth')\",\n    \"url\" : \"$input.params('url')\"\n}\n"
+          },
+          "uri": "arn:aws:apigateway:eu-central-1:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-central-1:{{YOUR AWS ACCOUNT ID}}:function:redir_post/invocations",
+          "httpMethod": "POST",
+          "type": "aws"
+        }
+      }
+    },
+    "/{token}": {
+      "get": {
+        "consumes": [
+          "application/json",
+          "text/html"
+        ],
+        "produces": [
+          "text/html"
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "301": {
+            "description": "301 response",
+            "headers": {
+              "Cache-Control": {
+                "type": "string"
+              },
+              "Location": {
+                "type": "string"
+              },
+              "Content-Type": {
+                "type": "string"
+              }
+            }
+          },
+          "404": {
+            "description": "404 response",
+            "headers": {
+              "Content-Type": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "responses": {
+            "default": {
+              "statusCode": "301",
+              "responseParameters": {
+                "method.response.header.Cache-Control": "'private, max-age=90'",
+                "method.response.header.Content-Type": "'text/html'",
+                "method.response.header.Location": "integration.response.body.destination_url"
+              },
+              "responseTemplates": {
+                "text/html": "$input.path('$.content')"
+              }
+            },
+            ".*Not Found.*": {
+              "statusCode": "404",
+              "responseParameters": {
+                "method.response.header.Content-Type": "'text/html'"
+              },
+              "responseTemplates": {
+                "text/html": "$input.path('$.errorMessage')"
+              }
+            }
+          },
+          "requestTemplates": {
+            "text/html": "#set($inputRoot = $input.path('$'))\n{\n  \"token\" : \"$input.params('token')\"\n}",
+            "application/json": "#set($inputRoot = $input.path('$'))\n{\n  \"token\" : \"$input.params('token')\"\n}"
+          },
+          "uri": "arn:aws:apigateway:eu-central-1:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-central-1:{{YOUR AWS ACCOUNT ID}}:function:redir_lookup/invocations",
+          "httpMethod": "POST",
+          "type": "aws"
+        }
+      }
+    }
+  }
+}
