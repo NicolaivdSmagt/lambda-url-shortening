@@ -40,5 +40,3 @@ And execute locally via the CLI:
 > echo '{ "token":"xxxxxxx" }' | apex invoke lookup_token
 ```
 To configure URL shortening in Tweetbot, go to preferences and configure "custom" URL shortening. For the API endpoint, use: "https://{{YOURDOMAIN}}/?auth={{PASS}}&url=%@".
-> echo '{ "token":"xxxxxxx" }' | apex invoke lookup_token
-```
