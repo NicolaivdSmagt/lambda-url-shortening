@@ -1,3 +1,6 @@
+Moved to https://gitlab.com/NicolaivdSmagt/lambda-url-shortening
+----------------------------------------------------------------
+
 # Lambda URL Shortener compatible with Tweetbot URL shortening
 
 This repo contains components for a URL shortner service running on Amazon's API Gateway and Lambda services. It is compatible with most applications that can use URL shortening automatically, such as Tweetbot.
